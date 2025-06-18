@@ -32,4 +32,44 @@
             </div>
         </nav>
     </header>
+    <section id="visualizar" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Oportunidades de Voluntariado</h1>
+                    <p>Encontre oportunidades para fazer a diferença em sua comunidade</p>
+                </div>
+
+                <div class="filters-section">
+                    <div class="search-filter">
+                        <div class="search-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Pesquisar por título ou descrição...">
+                        </div>
+                        <div class="filter-group">
+                            <select id="filterTipo">
+                                <option value="">Todos os tipos</option>
+                                <option value="Educação">Educação</option>
+                                <option value="Saúde">Saúde</option>
+                                <option value="Meio Ambiente">Meio Ambiente</option>
+                                <option value="Doação de Alimentos">Doação de Alimentos</option>
+                                <option value="Doação de Roupas">Doação de Roupas</option>
+                                <option value="Assistência Social">Assistência Social</option>
+                                <option value="Cultura e Arte">Cultura e Arte</option>
+                                <option value="Esporte">Esporte</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="necessidadesContainer" class="necessidades-container">
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhuma oportunidade encontrada</h3>
+                        <p>Tente ajustar os filtros ou termos de pesquisa</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 <body>
