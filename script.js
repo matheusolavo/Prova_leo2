@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarDoLocalStorage();
     if (document.getElementById('visualizar')) renderNecessidades();
 });
-
 function handleFormSubmit(e) {
     e.preventDefault();
     const form = e.target;
@@ -76,7 +75,6 @@ function clearValidationClasses(form) {
     form.querySelectorAll('input, select, textarea').forEach(f => f.classList.remove('error', 'success'));
     form.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
 }
-
 async function buscarCEP(e) {
     const cep = e.target.value.replace(/\D/g, '');
     if (cep.length !== 8) return;
