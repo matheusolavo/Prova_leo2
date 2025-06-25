@@ -76,3 +76,69 @@ function clearValidationClasses(form) {
     form.querySelectorAll('input, select, textarea').forEach(f => f.classList.remove('error', 'success'));
     form.querySelectorAll('.error-message').forEach(msg => msg.classList.remove('show'));
 }
+
+async function buscarCEP(e) {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+
+    try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data.erro) throw Error();
+
+        document.getElementById('rua').value = data.logradouro || '';
+        document.getElementById('bairro').value = data.bairro || '';
+        document.getElementById('cidade').value = data.localidade || '';
+        document.getElementById('estado').value = data.uf || '';
+    } catch {
+        alert('CEP inválido.');
+    }
+}
+
+function renderNecessidades(lista = necessidades) {
+    if (!necessidadesContainer) return;
+    const noResults = document.getElementById('noResults');
+    if (!lista.length) {
+        necessidadesContainer.innerHTML = '';
+        if (noResults) noResults.style.display = 'block';
+        return;
+    }
+
+    if (noResults) noResults.style.display = 'none';
+
+    necessidadesContainer.innerHTML = lista.map(n => `
+        <div class="necessidade-card">
+            <div class="card-header">
+                <div>
+                    <h3>${n.titulo}</h3>
+                    <p>${n.nomeInstituicao}</p>
+                </div>
+                <span>${n.tipoAjuda}</span>
+            </div>
+            <p>${n.descricao}</p>
+            <div class="card-location"><i class="fas fa-map-marker-alt"></i> ${[n.bairro, n.cidade, n.estado].filter(Boolean).join(', ')}</div>
+            <div class="card-contact">
+                <div><i class="fas fa-envelope"></i> <a href="mailto:${n.email}">${n.email}</a></div>
+                ${n.telefone ? `<div><i class="fas fa-phone"></i> <a href="tel:${n.telefone.replace(/\D/g, '')}">${n.telefone}</a></div>` : ''}
+                <div><i class="fas fa-calendar"></i> ${n.dataCadastro}</div>
+            </div>
+        </div>`).join('');
+}
+
+function filterNecessidades() {
+    const termo = searchInput.value.toLowerCase();
+    const tipo = filterTipo.value;
+    const filtradas = necessidades.filter(n =>
+        (!termo || [n.titulo, n.descricao, n.nomeInstituicao].some(t => t.toLowerCase().includes(termo))) &&
+        (!tipo || n.tipoAjuda === tipo)
+    );
+    renderNecessidades(filtradas);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+}
